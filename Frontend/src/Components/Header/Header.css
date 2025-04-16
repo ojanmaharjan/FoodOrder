@@ -1,0 +1,124 @@
+.header {
+    height: 34vw;
+    margin: 30px auto;
+    background: url('../../assets/header_img.png') no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: relative;
+}
+
+.header-contents {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5vw; /* gap between the paragraph */
+    max-width: 50%;
+    bottom: 10%;
+    left: 6vw;
+    animation: fadeIn 3s;
+}
+
+.header-contents h2 {
+    color: white;
+    font-size: max(4.5vw, 22px);
+    font-weight: 500;
+}
+
+.header-contents button {
+    color: #747474;
+    font-weight: 500;
+    font-size: max(1vw, 13px);
+    border-radius: 50px;
+    border: none;
+    background-color: white;
+    padding: 1vw 2.3vw;
+    transition: background-color 0.3s ease;
+}
+
+.header-contents button:hover {
+    background-color: #f0f0f0;
+}
+
+.header-contents p {
+    color: white;
+    font-size: 1vw;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Tablet view */
+@media (max-width: 1050px) {
+    .header {
+        height: 38vw;
+    }
+
+    .header-contents {
+        max-width: 45%;
+    }
+
+    .header-contents h2 {
+        font-size: max(4vw, 18px);
+    }
+
+    .header-contents button {
+        font-size: max(1.2vw, 12px);
+        padding: 1.5vw 3vw;
+    }
+}
+
+/* Small screens (large phones) */
+@media (max-width: 750px) {
+    .header {
+        height: 45vw;
+        background-size: cover; /* Adjust background to cover the area */
+    }
+
+    .header-contents {
+        max-width: 60%;
+        bottom: 8%;
+        left: 5vw;
+    }
+
+    .header-contents p {
+        display: none;
+    }
+
+    .header-contents h2 {
+        font-size: max(5vw, 18px);
+    }
+
+    .header-contents button {
+        padding: 2vw 4vw;
+        font-size: max(2.5vw, 12px);
+    }
+}
+
+/* Mobile view */
+@media (max-width: 500px) {
+    .header {
+        height: 50vw;
+    }
+
+    .header-contents {
+        max-width: 80%;
+        bottom: 5%;
+        left: 3vw;
+    }
+
+    .header-contents h2 {
+        font-size: max(6vw, 16px);
+    }
+
+    .header-contents button {
+        padding: 3vw 5vw;
+        font-size: max(3vw, 10px);
+    }
+}
