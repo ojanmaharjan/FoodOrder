@@ -1,12 +1,7 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import FoodItemViewSet, CartItemViewSet, remove_from_cart
+# from django.urls import path
+# from .views import RegisterView, LoginView
 
-router = DefaultRouter()
-router.register(r'food-items', FoodItemViewSet)
-router.register(r'cart', CartItemViewSet)
-
-urlpatterns = [
-    path('', include(router.urls)),
-    path('remove-from-cart/', remove_from_cart),  # Custom delete endpoint
-]
+# urlpatterns = [
+#     path('register/', RegisterView.as_view(), name='register'),
+#     path('login/', LoginView.as_view(), name='login'),
+# ]

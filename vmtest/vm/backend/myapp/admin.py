@@ -1,16 +1,14 @@
 from django.contrib import admin
-from .models import FoodItem
+from .models import Login
 
-models_list = [FoodItem]
+models_list = [Login]
 
-admin.site.register(FoodItem)
+admin.site.register(Login)
 
 class StudentItems(admin.ModelAdmin):
     list_display = ['id',
-                  'Items',
-                  'Titles',
-                  'Price',
-                  'Quantity',
-                  'Total']
+                    'Name',
+                    'Password'
+                    ]
 
 

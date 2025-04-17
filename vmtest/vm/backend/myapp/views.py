@@ -1,29 +1,21 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import FoodItem, CartItem
-from .serializers import FoodItemSerializer, CartItemSerializer
+from django.shortcuts import render
 
-# ViewSet for FoodItem
-class FoodItemViewSet(viewsets.ModelViewSet):
-    queryset = FoodItem.objects.all()
-    serializer_class = FoodItemSerializer
+# import view sets from the REST framework
+from rest_framework import viewsets
 
-# ViewSet for CartItem
-class CartItemViewSet(viewsets.ModelViewSet):
-    queryset = CartItem.objects.all()
-    serializer_class = CartItemSerializer
+# import the TodoSerializer from the serializer file
+from .serializers import LoginSerializer
 
-# Custom delete endpoint for removing by food_item ID
-@api_view(['DELETE'])
-def remove_from_cart(request):
-    food_item = request.data.get("food_item")
-    if not food_item:
-        return Response({"error": "food_item is required"}, status=status.HTTP_400_BAD_REQUEST)
+# import the Todo model from the models file
+from .models import Login
 
-    try:
-        cart_item = CartItem.objects.get(food_item=food_item)
-        cart_item.delete()
-        return Response({"message": "Item removed from cart."}, status=status.HTTP_200_OK)
-    except CartItem.DoesNotExist:
-        return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
+# create a class for the Todo model viewsets
+class LoginView(viewsets.ModelViewSet):
+
+    # create a serializer class and 
+    # assign it to the TodoSerializer class
+    serializer_class = LoginSerializer
+
+    # define a variable and populate it 
+    # with the Todo list objects
+    queryset = Login.objects.all()

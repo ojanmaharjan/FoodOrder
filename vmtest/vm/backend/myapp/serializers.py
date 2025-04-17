@@ -1,14 +1,13 @@
+# import serializers from the REST framework
 from rest_framework import serializers
-from .models import FoodItem, CartItem
 
-class FoodItemSerializer(serializers.ModelSerializer):
+# import the todo data model
+from .models import Login
+
+# create a serializer class
+class LoginSerializer(serializers.ModelSerializer):
+
+    # create a meta class
     class Meta:
-        model = FoodItem
-        fields = '__all__'
-
-class CartItemSerializer(serializers.ModelSerializer):
-    food_item_detail = FoodItemSerializer(source='food_item', read_only=True)
-
-    class Meta:
-        model = CartItem
-        fields = ['id', 'food_item', 'quantity', 'food_item_detail']
+        model = Login
+        fields = ('id', 'Name','Email','Password')
