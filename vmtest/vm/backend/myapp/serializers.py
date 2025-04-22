@@ -1,13 +1,13 @@
-# import serializers from the REST framework
+# api/serializers.py
+
 from rest_framework import serializers
+from .models import Signup,Login
 
-# import the todo data model
-from .models import Login
-
-# create a serializer class
-class LoginSerializer(serializers.ModelSerializer):
-
-    # create a meta class
+class SignupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Signup
+        fields = '__all__'
+class loginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
-        fields = ('id', 'Name','Email','Password')
+        fields = '__all__'

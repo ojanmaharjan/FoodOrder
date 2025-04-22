@@ -1,0 +1,26 @@
+.admin-navbar {
+    background-color: #3498db;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .admin-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .admin-navbar button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .admin-navbar button:hover {
+    background-color: #c0392b;
+  }
