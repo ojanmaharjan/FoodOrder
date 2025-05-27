@@ -10,12 +10,17 @@ const FoodDisplay = ({category}) => {
     <div className='food-display' id = 'food-display'>
         <h2>Top dishes near you</h2>
         <div className='food-display-list'>
-          {food_list.map((item,index)=>{
-            // {console.log(category,item.category);}
-            if (category === "All" || category === item.category){
-              return<FoodItem key={item.id} id={item.id} name={item.name} image={item.image} price={item.price} description={item.description} category={item.category}></FoodItem>
-            }
-         })}
+          {food_list.map((item, index) => {
+  console.log("FoodDisplay item object:", item);
+  // Try to find a unique id property automatically
+  let uniqueId = item._id || item.id || item.food_id || item.slug || item.name;
+  if (!item._id && !item.id && !item.food_id && !item.slug) {
+    console.warn("No unique id property found for food item. Using name as fallback. This may cause UI bugs if names are not unique.", item);
+  }
+  if (category === "All" || category === item.category) {
+    return <FoodItem key={uniqueId} id={uniqueId} name={item.name} image={item.image} price={item.price} description={item.description} category={item.category}></FoodItem>;
+  }
+})}
          </div>
     </div>
   )

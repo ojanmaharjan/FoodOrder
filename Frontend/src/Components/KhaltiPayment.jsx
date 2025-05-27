@@ -30,7 +30,7 @@ function KhaltiPayment({ amount }) {
 
     return (
         <button className="cart-total-button" onClick={pay} style={{marginTop: 20}}>
-            Pay with Khalti (Dummy)
+            Pay with Khalti 
         </button>
     );
 }

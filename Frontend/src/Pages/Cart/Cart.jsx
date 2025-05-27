@@ -5,11 +5,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
 import { StoreContext } from '../../Context/StoreContext';
-import { food_list } from '../../assets/assets';
+// import { food_list } from '../../assets/assets';
 import KhaltiPayment from '../../Components/KhaltiPayment';
 
 const Cart = () => {
-  const { cartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
+  const {food_list, cartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
   const [cart, setCart] = useState({});
   const [error, setError] = useState('');
 
@@ -56,20 +56,28 @@ const Cart = () => {
       <br />
       <hr />
       {food_list.map((item, index) => {
-        if (cartItems[String(item._id)] > 0) {
+        if (cartItems[String(item.id)] > 0) {
           return (
-            <div key={item._id}>
+            <div key={item.id}>
               <div className='cart-items-title cart-items-item'>
-                <img src={item.image} alt='' />
+                {console.log("Cart item image:", item.image, item)}
+<img 
+  src={
+    item.image
+      ? item.image.startsWith('http')
+        ? item.image
+        : `http://localhost:8000/media/${item.image}`
+      : '/images/default.jpg'
+  }
+  alt={item.name || ''}
+/>
                 <p>{item.name}</p>
                 <p>{item.price}</p>
-                <p>{cartItems[String(item._id)]}</p>
-                <p>{item.price * cartItems[String(item._id)]}</p>
+                <p>{cartItems[String(item.id)]}</p>
+                <p>{item.price * cartItems[String(item.id)]}</p>
 
-                <p onClick={() => { removeFromCart(item._id) }} className='cross'>X</p>
-                <p onClick={() => { addToCart(item._id) }} className='plus'>+</p>
-
-
+                <p onClick={() => { removeFromCart(item.id) }} className='cross'>X</p>
+                <p onClick={() => { addToCart(item.id) }} className='plus'>+</p>
               </div>
               <hr />
             </div>
