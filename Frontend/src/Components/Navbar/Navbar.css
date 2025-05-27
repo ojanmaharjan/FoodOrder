@@ -106,3 +106,8 @@
        display: none;
     }
 }
+.user-name{
+    color: #49557E;
+    padding-right: 5px;
+    font-size: large;
+}

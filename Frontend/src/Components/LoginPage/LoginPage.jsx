@@ -1,59 +1,68 @@
+
+
+
 import React, { useState } from 'react';
 import { assets } from '../../assets/assets';
 import './LoginPage.css';
 import axios from 'axios';
-import { validateEmail, validatePassword } from './validation';
+import { useNavigate } from 'react-router-dom';
+import { validateName } from './validation';
 
 const LoginPage = ({ setShowLogin, onLoginSuccess }) => {
   const [currState, setCurrState] = useState('Login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let valid = true;
-
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email format');
-      valid = false;
-    } else {
-      setEmailError('');
+    if (currState === 'SignUp' && !validateName(name)) {
+      setErrorMsg("Name cannot start with number.");
+      return;
     }
-
-    if (!validatePassword(password)) {
-      setPasswordError('Password must be at least 6 characters');
-      valid = false;
-    } else {
-      setPasswordError('');
-    }
-
-    if (!valid) return;
-
-    const payload = currState === 'SignUp'
-      ? { name, email, password }
-      : { email, password };
-
-    const endpoint = currState === 'SignUp'
-      ? 'http://localhost:8000/api/signup/'
-      : 'http://localhost:8000/api/login/';
+    const payload = currState === 'Login' ? { email, password } : { name, email, password };
+    const endpoint = currState === 'Login' ? 'http://localhost:8000/api/login/' : 'http://localhost:8000/api/signup/';
 
     try {
       const response = await axios.post(endpoint, payload);
+      console.log('Backend response:', response);
 
       if (currState === 'Login') {
-        localStorage.setItem('token', response.data.token);
-        onLoginSuccess(response.data.name); // pass name up
-        setShowLogin(false);
+        // Store tokens and user information
+        localStorage.setItem('accessToken', response.data.access);
+        localStorage.setItem('refreshToken', response.data.refresh);
+        localStorage.setItem('name', response.data.name);
+        localStorage.setItem('is_admin', response.data.is_admin);
+        
+        // Set role based on admin status
+        if (response.data.is_admin) {
+          localStorage.setItem('role', 'is_admin');
+          // Pass user info up to parent component
+          if (onLoginSuccess) {
+            onLoginSuccess(response.data.name, response.data.access, response.data.refresh, response.data.is_admin);
+          }
+          setShowLogin(false);
+          // Redirect to admin panel
+          navigate('/admins');
+        } else {
+          localStorage.setItem('role', 'user');
+          // Pass user info up to parent component
+          if (onLoginSuccess) {
+            onLoginSuccess(response.data.name, response.data.access, response.data.refresh, response.data.is_admin);
+          }
+          setShowLogin(false);
+          // Redirect to home page
+          navigate('/');
+        }
       } else {
         alert('Signup successful! Please log in.');
         setCurrState('Login');
       }
     } catch (error) {
+      console.error('Error:', error.response?.data || error.message);
       setErrorMsg(error.response?.data?.message || 'Something went wrong');
     }
   };
@@ -78,7 +87,6 @@ const LoginPage = ({ setShowLogin, onLoginSuccess }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {emailError && <p className='error'>{emailError}</p>}
 
           <input
             type='password'
@@ -87,15 +95,11 @@ const LoginPage = ({ setShowLogin, onLoginSuccess }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {passwordError && <p className='error'>{passwordError}</p>}
         </div>
 
         <button type="submit">{currState === 'SignUp' ? 'Create Account' : 'Login'}</button>
 
-        <div className='login-popup-condition'>
-          <input type="checkbox" required />
-          <p>By continuing, I agree to the terms of policy and conditions</p>
-        </div>
+      
 
         {errorMsg && <p className="error">{errorMsg}</p>}
 

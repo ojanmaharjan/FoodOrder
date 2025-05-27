@@ -8,8 +8,8 @@ const Footer = () => {
         <div className='footer-contain'>
           
             <div className='footer-Left'>
-                    <img src={assets.logo} alt=''/>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae exercitationem eligendi minima ullam veniam dicta at quia commodi porro, optio dolores quis, non vitae ex! Aliquid consectetur odio magni debitis?</p>
+                    <img src={assets.khaja} alt='footer-logo' className='footer-logo'/>
+                    <p>Welcome to Khaja Time – your ultimate destination for mouthwatering mid-day cravings. Whether you're into crispy samosas, spicy chatpate, or sweet sel roti, we bring Nepal's favorite snacks straight to your fingertips. Fast delivery, fresh ingredients, and flavors that feel like home — that's the Khaja Time promise. Dive into taste, anytime!</p>
                     <div className='footer-social-icons'>
                         <img src={assets.facebook_icon} alt="" />
                         <img src={assets.twitter_icon} alt="" />
@@ -32,12 +32,14 @@ const Footer = () => {
                 <ul>
                     <li>+977-9861627437</li>
                     <li>ojanmaharjan03@gmail.com</li>
+                    <li>+977-9803801115</li>
+                    <li>ashimmaharjan@gmail.com</li>
                 </ul>
             </div>
 
         </div>
         <hr/>
-        <p className='footer-copyright'> CopyRight 2025 © ojan.com - All Right Reserve</p>
+        <p className='footer-copyright'> CopyRight 2025 © Khaja Time - All Right Reserve</p>
         
       
     </div>

@@ -1,0 +1,86 @@
+/* EditFoodItem.css */
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-size: 1rem;
+  color: #333;
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+button[type="submit"]:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .food-form {
+    gap: 12px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    font-size: 0.9rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+  }
+}

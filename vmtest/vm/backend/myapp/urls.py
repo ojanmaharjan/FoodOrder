@@ -1,8 +1,16 @@
+# myapp/urls.py
 from django.urls import path
 from . import views
+from .views import SignUpView, LoginView
 
 urlpatterns = [
-    path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
+   path('signup/', SignUpView.as_view()),
+    path('login/', LoginView.as_view()),
+    # path('register/', views.register, name='register'),
+    path('venues/', views.venue_list, name='venue_list'),  # New endpoint
+    path('quiz/', views.quiz_on_summary, name="quiz"),
+    path('update/', views.update_data, name="update"),
+    path('delete/', views.delete_data, name="delete"),
+    path('checkout/',views.order_items,name="checkout"),
+    path('cart/', views.cart_list, name='cart_list')
 ]

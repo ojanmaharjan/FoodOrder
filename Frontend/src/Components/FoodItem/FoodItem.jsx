@@ -4,6 +4,7 @@ import "./FoodItem.css"
 import { StoreContext } from '../../Context/StoreContext'
 
 const FoodItem =({id,name,price,description,image}) => {
+    console.log('FoodItem rendered:', { id, name });
     // const [itemCount,setitemCount] = useState(0)
     const {cartItems,addToCart,removeFromCart}= useContext(StoreContext); //usecontext is not a function so we used { } inseded of [ ]
     // console.log("name of food",name)
@@ -12,15 +13,25 @@ const FoodItem =({id,name,price,description,image}) => {
     return(
         <div className='food-item'>
             <div className='food-item-img-container'>
-                <img className='food-item-img' src={image} alt=''/>
+                <img
+  className='food-item-img'
+  src={
+    image.startsWith('http')
+      ? image
+      : image.startsWith('/media/')
+      ? `http://localhost:8000${image}`
+      : `http://localhost:8000/media/${image}`
+  }
+  alt=''
+/>
                 
                     
-                 {!cartItems[id]
-                    ?<img className='add' onClick={()=>addToCart(id)} src={assets.add_icon_white} alt=''/>
+                 {!cartItems[String(id)]
+                    ?<img className='add' onClick={()=>addToCart(String(id))} src={assets.add_icon_white} alt=''/>
                     :<div className='food-item-counter'>
-                        <img onClick={()=>addToCart(id)} src={assets.add_icon_green} alt=''/>
-                        <p>{cartItems[id]}</p>
-                        <img onClick={()=>removeFromCart(id)} src={assets.remove_icon_red} alt=''/>
+                        <img onClick={()=>addToCart(String(id))} src={assets.add_icon_green} alt=''/>
+                        <p>{cartItems[String(id)]}</p>
+                        <img onClick={()=>removeFromCart(String(id))} src={assets.remove_icon_red} alt=''/>
                     </div>
                     } 
                      

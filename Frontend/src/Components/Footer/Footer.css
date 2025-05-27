@@ -15,6 +15,9 @@
     gap: 80px;
     grid-template-columns: 2fr 1fr 1fr;
 }
+.footer-logo{
+    width: 150px;
+}
 .footer-Left , .footer-Center , .footer-Right {
 display: flex;
 align-items: start;

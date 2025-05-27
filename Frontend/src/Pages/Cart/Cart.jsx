@@ -1,186 +1,102 @@
-// import React, { useContext } from 'react'
-// import './Cart.css'
-// import { StoreContext } from '../../Context/StoreContext'
-// import { food_list } from '../../assets/assets'
 
 
-// const Cart = () => {
-//   const {cartItems,addToCart,removeFromCart,TotalCartAmount}= useContext(StoreContext)
-//   return (
-//     <div className='cart'>
-//       <div className='cart-items'>
-//         <div className='cart-items-title'>
-//           <p>Items</p>
-//           <p>Titles</p>
-//           <p>Price</p>
-//           <p>Quantity</p>
-//           <p>Total</p>
-//           <p>Remove</p>
-//         </div>
-        
-//         <br/>
-//         <hr/>
-//        {food_list.map((item,index)=>{
-//         if(cartItems[item._id]>0)
-//         {
-//           return(
-//             <div>
-//             <div className='cart-items-title cart-items-item' key={item._id}>
-//             <img src={item.image} alt=''/>
-//             <p>{item.name}</p>
-//             <p>{item.price}</p>
-//             <p>{cartItems[item._id]}</p>
-//             <p>{item.price*cartItems[item._id]}</p>
-//             <p  onClick={()=>{removeFromCart(item._id)}} className='cross'>X</p>
-//             </div>
-//             <hr/>
-//             </div>
-//           )
-//         }
-//        }
-    
-//         )}
-    
-//     </div>
-//         <div className='cart-bottom'>
-//           <div className='cart-total'>  
-//             <h2>cart Total</h2>
-//             <div className='cart-total-details'>
-//               <p>SubTotal</p>
-//               <p>{TotalCartAmount()}</p>
-//             </div>
-//             <div className='cart-total-details'>
-//               <p>Delivery fee</p>
-//               <p>{2}</p>
-//             </div>
-//             <div className='cart-total-details'>
-//               <b>Cart Total </b>
-//               <b>{TotalCartAmount()+2}</b>
-//             </div>
-//             <button className='cart-total-button'>Proced to Check</button>
-//           </div>
-//        </div>
-//         {/* <div className='cart-promocode'>
-//           <p>If you have promocode enter here</p>
-//           <div className='cart-promocode-input'>
-//             <input type='text' placeholder='Enter your promocode'/>
-//             <button>Submit</button>
-//           </div>
-//         </div> */}
-    
-//   </div>
-      
-    
-//   )
-// }
 
-// export default Cart;
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
 import { StoreContext } from '../../Context/StoreContext';
 import { food_list } from '../../assets/assets';
+import KhaltiPayment from '../../Components/KhaltiPayment';
 
 const Cart = () => {
   const { cartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
   const [cart, setCart] = useState({});
+  const [error, setError] = useState('');
 
- 
+  // This function checks if the user is logged in by checking if an accessToken exists in localStorage
+  const isLoggedIn = () => {
+    const token = localStorage.getItem('accessToken');
+    return token !== null; // If there's an accessToken, the user is logged in
+  };
 
-  // const handleRemoveFromCart = (id) => {
-  //   axios.delete('http://127.0.0.1:8000/api/remove-from-cart/', { data: { food_item_id: id } })
-  //     .then(response => {
-  //       // Update cartItems after removing item
-  //       removeFromCart(id);
-  //     })
-  //     .catch(error => console.error('Error removing item from cart:', error));
-  // };
+
+
+// Removed useNavigate since Khalti is used directly
+
+// Remove handleCheckout logic and use Khalti directly
+
+
+
+// Debugging output
+  <div style={{ background: '#ffe', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+    <h4>Debug Info</h4>
+    <div>
+      <strong>cartItems:</strong>
+      <pre style={{ maxHeight: 120, overflow: 'auto', fontSize: 13 }}>{JSON.stringify(cartItems, null, 2)}</pre>
+    </div>
+    <div>
+      <strong>food_list:</strong>
+      <pre style={{ maxHeight: 120, overflow: 'auto', fontSize: 13 }}>{JSON.stringify(food_list, null, 2)}</pre>
+    </div>
+  </div>
 
   return (
     <div className='cart'>
-      <div className='cart-items'>
-        <div className='cart-items-title'>
-          <p>Items</p>
-          <p>Titles</p>
-          <p>Price</p>
-          <p>Quantity</p>
-          <p>Total</p>
-          <p>Remove</p>
-        </div>
-
-        <br />
-        <hr />
-        {food_list.map((item, index) => {
-          if (cartItems[item._id] > 0) {
-            return (
-              <div key={item._id}>
-                <div className='cart-items-title cart-items-item'>
-                  <img src={item.image} alt='' />
-                  <p>{item.name}</p>
-                  <p>{item.price}</p>
-                  <p>{cartItems[item._id]}</p>
-                  <p>{item.price * cartItems[item._id]}</p>
-                  <p onClick={() => { handleRemoveFromCart(item._id) }} className='cross'>X</p>
-                  {/* <p onClick={() => { handleAddToCart(item._id) }} className='cross'>+</p> */}
-                </div>
-                <hr />
-              </div>
-            );
-          }
-        })}
+    <div className='cart-items'>
+      <div className='cart-items-title'>
+        <p>Items</p>
+        <p>Titles</p>
+        <p>Price</p>
+        <p>Quantity</p>
+        <p>Total</p>
+        <p>Remove</p>
+        <p>Add</p>
       </div>
 
-      <div className='cart-bottom'>
-        <div className='cart-total'>
-          <h2>Cart Total</h2>
-          <div className='cart-total-details'>
-            <p>SubTotal</p>
-            <p>{TotalCartAmount()}</p>
-          </div>
-          <div className='cart-total-details'>
-            <p>Delivery fee</p>
-            <p>{TotalCartAmount()===0?0:2}</p>
-          </div>
-          <div className='cart-total-details'>
-            <b>Cart Total</b>
-            <b>{TotalCartAmount()===0?0:TotalCartAmount()+2}</b>
-          </div>
-          {/* <button className='cart-total-button'>Proceed to Checkout</button> */}
-          <button
-  className='cart-total-button'
-  onClick={() => {
-    // Save all cartItems to backend
-    Object.entries(cartItems).forEach(([id, quantity]) => {
-      if (quantity > 0) {
-        const payload = {
-          food_item: parseInt(id),
-          quantity,
-        };
-        console.log("Sending to backend:", payload); // ✅ Log what's being sent
+      <br />
+      <hr />
+      {food_list.map((item, index) => {
+        if (cartItems[String(item._id)] > 0) {
+          return (
+            <div key={item._id}>
+              <div className='cart-items-title cart-items-item'>
+                <img src={item.image} alt='' />
+                <p>{item.name}</p>
+                <p>{item.price}</p>
+                <p>{cartItems[String(item._id)]}</p>
+                <p>{item.price * cartItems[String(item._id)]}</p>
 
-        axios.post('http://127.0.0.1:8000/api/cart/', payload)
-          .then((res) => {
-            console.log("✅ POST success:", res.data);
-          })
-          .catch((error) => {
-            console.error(" POST failed:", error.response?.data || error.message);
-          });
-      }
-    });
-
-    setTimeout(() => {
-      window.location.href = "/crud"; // Navigate to CartCRUDPage
-    }, 500); // Small delay for requests
-  }}
->
-  Proceed to Checkout
-</button>
+                <p onClick={() => { removeFromCart(item._id) }} className='cross'>X</p>
+                <p onClick={() => { addToCart(item._id) }} className='plus'>+</p>
 
 
+              </div>
+              <hr />
+            </div>
+          );
+        }
+      })}
+    </div>
+
+    <div className='cart-bottom'>
+      <div className='cart-total'>
+        <div className='cart-total-details'>
+          <p>SubTotal</p>
+          <p>{TotalCartAmount()}</p>
         </div>
+        <div className='cart-total-details'>
+          <p>Delivery fee</p>
+          <p>{2}</p>
+        </div>
+        <div className='cart-total-details'>
+          <b>Cart Total</b>
+          <b>{TotalCartAmount() }</b>
+        </div>
+        <KhaltiPayment amount={TotalCartAmount()} />
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Cart;

@@ -11,9 +11,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,12 +47,14 @@ INSTALLED_APPS = [
     'myapp',
     'rest_framework',
     'rest_framework_simplejwt'
+    
     # 'api',
    
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        
     ],
 }
 
@@ -89,9 +96,9 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "mydatabase",
-        "USER": "mydatabaseuser",
-        "PASSWORD": "mypassword",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "admin",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -145,5 +152,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Your React app's URL
     "http://localhost:3000",  # Your React app's URL
 ]
+CORS_ALLOW_CREDENTIALS = True
+# SIMPLE_JWT = {
+#      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+#      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#      'ROTATE_REFRESH_TOKENS': True,
+#      'BLACKLIST_AFTER_ROTATION': True
+# }
 
 
