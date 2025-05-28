@@ -2,7 +2,7 @@ import React from "react";
 import KhaltiCheckout from "khalti-checkout-web";
 
 const config = {
-    publicKey: "test_public_key_dc74b7b7a0c448b5b8a4b7b7a0c448b5",
+    publicKey: "test_public_key_b7ebb52133dc4dc9a2fb9d430c8da34d",
     productIdentity: "1234567890",
     productName: "Food Order",
     productUrl: "http://localhost:5173/",

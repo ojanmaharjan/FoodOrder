@@ -140,26 +140,26 @@ const Navbar = ({ onSignIn,userName,userRole }) => {
         <Link to="/" onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>Home</Link>
         <a href="#app-Download" onClick={() => setMenu("mobile-app")} className={menu === "mobile-app" ? "active" : ""}>Mobile-app</a>
         <a href="#footer" onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>Contact us</a>
-        {userRole === "is_admin" && (
+
+        {userRole === "is_admin" ? (
           <>
-            {/* <li>
-              <Link to="/admins" className={menu === "admin" ? "active" : ""} onClick={() => setMenu("admin")}>Admin</Link>
-            </li> */}
             <li>
               <Link to="/admins" onClick={() => setMenu("dashboard")} className={menu === "dashboard" ? "active" : ""}>Admin Panel</Link>
             </li>
           </>
-        )}
+        ):(<div className="navbar-search-icon">
+          <Link to="/cart">
+            <img src={assets.basket_icon} alt="cart" />   
+          </Link>
+        </div>)}
+
+        
 
 
       </ul>
       <div className="navbar-right">
         <img src={assets.search_icon} alt="search" />
-        <div className="navbar-search-icon">
-          <Link to="/cart">
-            <img src={assets.basket_icon} alt="cart" />   
-          </Link>
-        </div>
+       
           {/* //show username if loggin */}
         {userName ? (
           <div className="user-info">
