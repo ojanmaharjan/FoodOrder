@@ -88,14 +88,14 @@ const Cart = () => {
 
     <div className='cart-bottom'>
       <div className='cart-total'>
-        <div className='cart-total-details'>
+        {/* <div className='cart-total-details'>
           <p>SubTotal</p>
           <p>{TotalCartAmount()}</p>
-        </div>
-        <div className='cart-total-details'>
+        </div> */}
+        {/* <div className='cart-total-details'>
           <p>Delivery fee</p>
           <p>{2}</p>
-        </div>
+        </div> */}
         <div className='cart-total-details'>
           <b>Cart Total</b>
           <b>{TotalCartAmount() }</b>

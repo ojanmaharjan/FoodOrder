@@ -1,0 +1,104 @@
+.recommended-section {
+  margin: 2rem 0;
+}
+
+.recommended-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.recommended-list {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Match the FoodItem styles for card consistency */
+.food-item {
+  width: 220px;
+  margin: auto;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px #00000015;
+  transition: 0.3s;
+  animation: fadeIn 1s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.food-item-img-container {
+  position: relative;
+  width: 100%;
+}
+
+.food-item-img {
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
+  object-fit: cover;
+}
+
+.food-item-info {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.food-item-name-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.food-item-name-rating p {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.food-item-des {
+  font-size: 0.95em;
+  color: #444;
+  margin-bottom: 8px;
+  padding: 0 1rem;
+}
+
+.food-item-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.food-item-img:hover {
+  transform: scale(1.05);
+}
+
+.food-item-img-container .add {
+  width: 35px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  top: 8rem;
+  right: 10px;
+}
+
+.food-item-counter {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  padding: 1px;
+  gap: 10px;
+  border-radius: 50px;
+  background-color: white;
+}
+
+.food-item-counter img {
+  width: 30px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

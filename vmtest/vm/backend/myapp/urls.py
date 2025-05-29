@@ -2,6 +2,7 @@
 from django.urls import path
 from . import views
 from .views import SignUpView, LoginView
+from .api_jaccard_recommendation import jaccard_recommendations
 
 urlpatterns = [
    path('signup/', SignUpView.as_view()),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('update/', views.update_data, name="update"),
     path('delete/', views.delete_data, name="delete"),
     path('checkout/',views.order_items,name="checkout"),
-    path('cart/', views.cart_list, name='cart_list')
+    path('cart/', views.cart_list, name='cart_list'),
+    path('recommend/', jaccard_recommendations, name='jaccard_recommendation')
 ]

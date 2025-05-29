@@ -12,6 +12,7 @@ from .api_quiz import *
 from .api_update_food import *
 from .api_delete import *
 from .api_order_item import *
+from .api_jaccard_recommendation import *
 
 from django.contrib.auth.models import User
 
@@ -101,6 +102,10 @@ def update_data(request):
 @api_view(['POST'])
 def delete_data(request):
     return Response(delete_food_data(request.data))
+
+@api_view(['GET'])
+def jaccard_recommendation(request):
+    return Response(jaccard_recommendations(request))
 
 @api_view(['GET'])
 def cart_list(request):
