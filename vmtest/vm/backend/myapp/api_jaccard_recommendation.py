@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 @permission_classes([IsAuthenticated])
 def jaccard_recommendations(request):
     user = request.user
+    if user.is_staff:
+        return Response({'recommendations': [], 'message': 'Recommendations are only for regular users.'})
     # Get set of food names ordered by current user
     user_food_names = set(Cart.objects.filter(user=user).values_list('name', flat=True))
 

@@ -9,15 +9,58 @@ import { StoreContext } from '../../Context/StoreContext';
 import KhaltiPayment from '../../Components/KhaltiPayment';
 
 const Cart = () => {
-  const {food_list, cartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
+  const {food_list, cartItems, setCartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
   const [cart, setCart] = useState({});
   const [error, setError] = useState('');
+  const [processing, setProcessing] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
 
   // This function checks if the user is logged in by checking if an accessToken exists in localStorage
   const isLoggedIn = () => {
     const token = localStorage.getItem('accessToken');
     return token !== null; // If there's an accessToken, the user is logged in
   };
+
+  const handleProcessToCart = async () => {
+    setError('');
+    setSuccessMsg('');
+    if (!isLoggedIn()) {
+      setError('Please log in to process your cart.');
+      return;
+    }
+    if (TotalCartAmount() === 0) {
+      setError('Cart is empty.');
+      return;
+    }
+    setProcessing(true);
+    // Prepare order data
+    const order = Object.keys(cartItems).filter(
+      (id) => cartItems[id] > 0
+    ).map((id) => {
+      const item = food_list.find((f) => String(f.id) === id);
+      return item ? {
+        name: item.name,
+        price: item.price,
+        quantity: cartItems[id]
+      } : null;
+    }).filter(Boolean);
+
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const res = await axios.post(
+        '/api/checkout/',
+        { order },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      setSuccessMsg('Cart processed successfully!');
+      setCartItems({}); // Clear cart
+    } catch (err) {
+      setError('Failed to process cart.');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
 
 
 
@@ -72,11 +115,11 @@ const Cart = () => {
   alt={item.name || ''}
 />
                 <p>{item.name}</p>
-                <p>{item.price}</p>
+                <p>Rs {item.price}</p>
                 <p>{cartItems[String(item.id)]}</p>
-                <p>{item.price * cartItems[String(item.id)]}</p>
+                <p>Rs {item.price * cartItems[String(item.id)]}</p>
 
-                <p onClick={() => { removeFromCart(item.id) }} className='cross'>X</p>
+                <p onClick={() => { removeFromCart(item.id) }} className='cross'>-</p>
                 <p onClick={() => { addToCart(item.id) }} className='plus'>+</p>
               </div>
               <hr />
@@ -88,19 +131,16 @@ const Cart = () => {
 
     <div className='cart-bottom'>
       <div className='cart-total'>
-        {/* <div className='cart-total-details'>
-          <p>SubTotal</p>
-          <p>{TotalCartAmount()}</p>
-        </div> */}
-        {/* <div className='cart-total-details'>
-          <p>Delivery fee</p>
-          <p>{2}</p>
-        </div> */}
         <div className='cart-total-details'>
           <b>Cart Total</b>
-          <b>{TotalCartAmount() }</b>
+          <b> Rs  {TotalCartAmount() }</b>
         </div>
         <KhaltiPayment amount={TotalCartAmount()} />
+        <button className='cart-total-button' onClick={handleProcessToCart} disabled={processing || TotalCartAmount() === 0}>
+          {processing ? 'Processing...' : 'Processed to Cart'}
+        </button>
+        {successMsg && <div style={{color: 'green', marginTop: 8}}>{successMsg}</div>}
+        {error && <div style={{color: 'red', marginTop: 8}}>{error}</div>}
       </div>
     </div>
   </div>
