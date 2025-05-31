@@ -40,7 +40,7 @@ const RecommendedFoods = () => {
     setError('');
     setFoods([]);
     if (!accessToken) {
-      setError('You must be logged in to see recommendations.');
+      setError(' ');
       return;
     }
     setLoading(true);
