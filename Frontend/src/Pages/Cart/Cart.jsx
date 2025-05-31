@@ -7,6 +7,7 @@ import './Cart.css';
 import { StoreContext } from '../../Context/StoreContext';
 // import { food_list } from '../../assets/assets';
 import KhaltiPayment from '../../Components/KhaltiPayment';
+import UserDetailForm from './UserDetailForm';
 
 const Cart = () => {
   const {food_list, cartItems, setCartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
@@ -14,6 +15,8 @@ const Cart = () => {
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
+  const [showDetailForm, setShowDetailForm] = useState(false);
+  const [userDetail, setUserDetail] = useState(null);
 
   // This function checks if the user is logged in by checking if an accessToken exists in localStorage
   const isLoggedIn = () => {
@@ -21,7 +24,8 @@ const Cart = () => {
     return token !== null; // If there's an accessToken, the user is logged in
   };
 
-  const handleProcessToCart = async () => {
+  // Step 1: Show user detail form before processing cart
+  const handleProcessToCart = () => {
     setError('');
     setSuccessMsg('');
     if (!isLoggedIn()) {
@@ -32,59 +36,72 @@ const Cart = () => {
       setError('Cart is empty.');
       return;
     }
-    setProcessing(true);
-    // Prepare order data
-    const order = Object.keys(cartItems).filter(
-      (id) => cartItems[id] > 0
-    ).map((id) => {
-      const item = food_list.find((f) => String(f.id) === id);
-      return item ? {
-        name: item.name,
-        price: item.price,
-        quantity: cartItems[id]
-      } : null;
-    }).filter(Boolean);
+    setShowDetailForm(true);
+  };
 
+  // Step 2: Handle user detail form submission
+  const handleUserDetailSubmit = async (detail) => {
+    setProcessing(true);
+    setError('');
+    setSuccessMsg('');
+    setUserDetail(detail);
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const res = await axios.post(
+      // Save user detail to backend (adjust endpoint as needed)
+      await axios.post('/api/save-detail/', detail, { headers: { Authorization: `Bearer ${accessToken}` } });
+      // Now process the cart
+      const order = Object.keys(cartItems).filter(
+        (id) => cartItems[id] > 0
+      ).map((id) => {
+        const item = food_list.find((f) => String(f.id) === id);
+        return item ? {
+          name: item.name,
+          price: item.price,
+          quantity: cartItems[id]
+        } : null;
+      }).filter(Boolean);
+      await axios.post(
         '/api/checkout/',
         { order },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      setSuccessMsg('Cart processed successfully!');
+      setSuccessMsg(' Cart processed successfully!');
       setCartItems({}); // Clear cart
+      setShowDetailForm(false);
     } catch (err) {
-      setError('Failed to process cart.');
+      // Show backend error details if available
+      if (err.response && err.response.data) {
+        // If backend returns validation errors
+        if (err.response.data.data) {
+          setError(
+            typeof err.response.data.data === 'string' ?
+              err.response.data.data :
+              Object.entries(err.response.data.data)
+                .map(([field, msg]) => `${field}: ${Array.isArray(msg) ? msg.join(', ') : msg}`)
+                .join(' | ')
+          );
+        } else if (err.response.data.detail) {
+          setError(err.response.data.detail);
+        } else if (err.response.data.status) {
+          setError(err.response.data.status);
+        } else {
+          setError('Failed to save details or process cart.');
+        }
+      } else {
+        setError('Failed to save details or process cart.');
+      }
     } finally {
       setProcessing(false);
     }
   };
 
 
-
-
-// Removed useNavigate since Khalti is used directly
-
-// Remove handleCheckout logic and use Khalti directly
-
-
-
-// Debugging output
-  <div style={{ background: '#ffe', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
-    <h4>Debug Info</h4>
-    <div>
-      <strong>cartItems:</strong>
-      <pre style={{ maxHeight: 120, overflow: 'auto', fontSize: 13 }}>{JSON.stringify(cartItems, null, 2)}</pre>
-    </div>
-    <div>
-      <strong>food_list:</strong>
-      <pre style={{ maxHeight: 120, overflow: 'auto', fontSize: 13 }}>{JSON.stringify(food_list, null, 2)}</pre>
-    </div>
-  </div>
-
   return (
     <div className='cart'>
+      {/* Show user detail form if needed */}
+      {showDetailForm && (
+        <UserDetailForm onSubmit={handleUserDetailSubmit} loading={processing} />
+      )}
     <div className='cart-items'>
       <div className='cart-items-title'>
         <p>Items</p>
@@ -136,7 +153,7 @@ const Cart = () => {
           <b> Rs  {TotalCartAmount() }</b>
         </div>
         <KhaltiPayment amount={TotalCartAmount()} />
-        <button className='cart-total-button' onClick={handleProcessToCart} disabled={processing || TotalCartAmount() === 0}>
+        <button className='cart-total-button' onClick={handleProcessToCart} disabled={processing || TotalCartAmount() === 0 || showDetailForm}>
           {processing ? 'Processing...' : 'Processed to Cart'}
         </button>
         {successMsg && <div style={{color: 'green', marginTop: 8}}>{successMsg}</div>}
