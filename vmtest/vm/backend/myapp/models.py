@@ -52,3 +52,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"{self.username} - {self.name}"
+
+class Detail(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=150)
+    contact = models.CharField(max_length=10)
+    address = models.CharField(max_length=256)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.contact}"

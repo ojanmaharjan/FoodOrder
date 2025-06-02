@@ -17,6 +17,7 @@ from .api_jaccard_recommendation import *
 from django.contrib.auth.models import User
 
 from .serializers import CartSerializer
+from .serializers import DetailSerializer
 
 import json
 
@@ -152,3 +153,12 @@ def order_items(request):
         )
 
     return Response({'status':request.body})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_detail(request):
+    serializer = DetailSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response({'status':'success','data':serializer.data})
+    return Response({'status':'error','data':serializer.errors},status=400)
