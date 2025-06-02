@@ -10,6 +10,14 @@ import KhaltiPayment from '../../Components/KhaltiPayment';
 import UserDetailForm from './UserDetailForm';
 
 const Cart = () => {
+  // Remove all of one item from cart
+  const removeAllOfItem = (itemId) => {
+    setCartItems((prev) => {
+      const newCart = { ...prev };
+      delete newCart[String(itemId)];
+      return newCart;
+    });
+  };
   const {food_list, cartItems, setCartItems, addToCart, removeFromCart, TotalCartAmount } = useContext(StoreContext);
   const [cart, setCart] = useState({});
   const [error, setError] = useState('');
@@ -109,8 +117,9 @@ const Cart = () => {
         <p>Price</p>
         <p>Quantity</p>
         <p>Total</p>
-        <p>Remove</p>
+        <p>DecreaseItem</p>
         <p>Add</p>
+        <p>RemoveAll</p>
       </div>
 
       <br />
@@ -138,6 +147,7 @@ const Cart = () => {
 
                 <p onClick={() => { removeFromCart(item.id) }} className='cross'>-</p>
                 <p onClick={() => { addToCart(item.id) }} className='plus'>+</p>
+                <p onClick={() => removeAllOfItem(item.id)} className='remove-all-btn'>X</p>
               </div>
               <hr />
             </div>

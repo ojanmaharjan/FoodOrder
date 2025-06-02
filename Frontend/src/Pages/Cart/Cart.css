@@ -2,11 +2,15 @@
     margin-top: 100px;
 }
 .cart-items-title{
-    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr;
     display: grid;
+    grid-template-columns: 1fr 1.5fr 0.5fr 1fr 1fr 0.8fr 0.8fr 1fr;
     align-items: center;
     color: gray;
     font-size: max(1vw,12px);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow-x: auto;
+    margin-bottom: 0;
 }
 .cart-items-item{
    margin: 10px 0px;
@@ -57,6 +61,12 @@
     text-align: center;
 }
 .plus{
+    width: 40px;
+    background-color: #FF914C;
+    border-radius: 2rem;
+    text-align: center;
+}
+.remove-all-btn{
     width: 40px;
     background-color: #FF914C;
     border-radius: 2rem;
